@@ -19,12 +19,17 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/undistort_output.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
+[img1]: ./images/chessboard_corners.png "Chessboard Corners"
+[img2]: ./images/undistort_chessboard.png "Undistorted Chessboard"
+[img3]: ./test_images/test3.jpg "Test3.jpg Test Image"
+[img4]: ./images/pipeline_undistorted.png "Undistorted test3.jpg"
+[img5]: ./images/pipeline_sobelx.png "Sobel X"
+[img6]: ./images/pipeline_sobely.png "Sobel Y"
+[img7]: ./images/pipeline_grad-magn.png "Gradient Magnitude Threshold"
+[img8]: ./images/pipeline_hls.png "HLS S-Color Threshold"
+[img9]: ./images/pipeline_binary_combined.png "Binary Pipeline Combined"
+[img10]: ./images/perspective_undistorted_annotated.png "Perspective Undistored Annotated"
+[img11]: ./images/perspective_warped_annotated.png "Perspective Warped Annotated"
 [video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
@@ -47,52 +52,81 @@ The code for this step is contained in the first code cell of the IPython notebo
 
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
+An example of the result of finding the chessboard corners is:
+
+![alt text][img1]
+
 I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
 
-![alt text][image1]
+![alt text][img2]
 
 ### Pipeline (single images)
 
 #### 1. Provide an example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+![alt text][img3]
+
+And the corrected version:
+![alt text][img4]
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
+I implemented the following threshold methods:
+##### a. Sobel X
+The code can be found in the abs_sobel_thresh method in the 3rd cell. The result is:
+![alt text][img5]
+##### b. Sobel Y
+The code is the same method as for the Sobel X, except that the parameter 'orient' should be 'y'
+![alt text][img6]
+##### c. Gradient Magnitude Threshold
+The code can be found in the mag_thresh method in the 3rd cell. The result is:
+![alt text][img7]
+##### d. HLS S-Channel Threshold
+The code can be found in the threshold_binary method in the 3rd cell. The result is:
+![alt text][img8]
 
-![alt text][image3]
+The combination I used is:
+* HLS S-channel threshold with a threshold of (170, 255)
+* Sobel X operator with a kernel of 3 and threshold of (20, 100)
+And then apply the OR operator.
+The code can be found in the threshold_binary method in the 3rd cell.
+
+The resulting combination is:
+![alt text][img9]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform includes a function called `perspectiveTransform()`, which appears in  the 3rd cell of the `code.ipynb` file. I chose the hardcode the source and destination points in the following manner:
 
 ```python
 src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
+    [[200,img_size[1]],
+    [590,450],
+    [695,450],
+    [1150,img_size[1]]])
 dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
+    [[200,img_size[1]],
+    [200,0],
+    [1000,0],
+    [1000,img_size[1]]])
 ```
 
 This resulted in the following source and destination points:
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
+| 200, 720      | 200, 720      | 
+| 590, 450      | 200, 0        |
+| 695, 450      | 1000, 0       |
+| 1150, 720     | 1000, 720     |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-![alt text][image4]
+* Undistored image with source points:
+![alt text][img10]
+* Warped image with destination points:
+![alt text][img11]
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
