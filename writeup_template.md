@@ -159,4 +159,4 @@ Here's a [link to my video result](./project_video_annotated.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+* as you can see on the image, when the lines are not clearly visible (the gray parts) I should use some smoothing technique (for example, averaging previous frames) to smoothen the output
