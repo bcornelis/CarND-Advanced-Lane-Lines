@@ -30,6 +30,7 @@ The goals / steps of this project are the following:
 [img9]: ./images/pipeline_binary_combined.png "Binary Pipeline Combined"
 [img10]: ./images/perspective_undistorted_annotated.png "Perspective Undistored Annotated"
 [img11]: ./images/perspective_warped_annotated.png "Perspective Warped Annotated"
+[img12]: ./images/result.png "Result"
 [video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
@@ -140,9 +141,11 @@ I did this in lines # through # in my code in `my_other_file.py`
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+The pipeline has been implemented on two locations:
+* in cell 6 the manual steps to visualize every image
+* in cell 7 the pipeline used for the video
 
-![alt text][image6]
+![alt text][img12]
 
 ---
 
@@ -150,7 +153,7 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_video_annotated.mp4)
 
 ---
 
