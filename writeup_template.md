@@ -104,8 +104,8 @@ The code for my perspective transform includes a function called `perspectiveTra
 src = np.float32(
     [[200,img_size[1]],
     [590,450],
-    [695,450],
-    [1150,img_size[1]]])
+    [690,450],
+    [1120,img_size[1]]])
 dst = np.float32(
     [[200,img_size[1]],
     [200,0],
@@ -119,8 +119,8 @@ This resulted in the following source and destination points:
 |:-------------:|:-------------:| 
 | 200, 720      | 200, 720      | 
 | 590, 450      | 200, 0        |
-| 695, 450      | 1000, 0       |
-| 1150, 720     | 1000, 720     |
+| 690, 450      | 1000, 0       |
+| 1120, 720     | 1000, 720     |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
