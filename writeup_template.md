@@ -137,6 +137,11 @@ This is implemented in cell 4 and is the code provide in the course.
 
 This is implemented in cell 4 and is the code provide in the course.
 
+For the camera position I performed the following steps:
+* find the center of the car by (right_fitx[-1] - left_fitx[-1]); meaning the bottom x values of the lines
+* the center of the lane is 660, meaning the center of 200 and 1120
+* so the difference from the center is the difference between those values, multiplied by the xm_per_pix value to get the real world distance
+
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
 The pipeline has been implemented on two locations:
