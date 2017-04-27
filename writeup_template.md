@@ -104,8 +104,8 @@ The code for my perspective transform includes a function called `perspectiveTra
 src = np.float32(
     [[200,img_size[1]],
     [590,450],
-    [695,450],
-    [1150,img_size[1]]])
+    [690,450],
+    [1120,img_size[1]]])
 dst = np.float32(
     [[200,img_size[1]],
     [200,0],
@@ -119,8 +119,8 @@ This resulted in the following source and destination points:
 |:-------------:|:-------------:| 
 | 200, 720      | 200, 720      | 
 | 590, 450      | 200, 0        |
-| 695, 450      | 1000, 0       |
-| 1150, 720     | 1000, 720     |
+| 690, 450      | 1000, 0       |
+| 1120, 720     | 1000, 720     |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
@@ -136,6 +136,11 @@ This is implemented in cell 4 and is the code provide in the course.
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
 This is implemented in cell 4 and is the code provide in the course.
+
+For the camera position I performed the following steps:
+* find the center of the car by (right_fitx[-1] - left_fitx[-1]); meaning the bottom x values of the lines
+* the center of the lane is 660, meaning the center of 200 and 1120
+* so the difference from the center is the difference between those values, multiplied by the xm_per_pix value to get the real world distance
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
